@@ -27,7 +27,7 @@ Records `design_decal_scope_prefix`, `design_decal_scope_extended_prefix`, `desi
 Records `chamfer_set_equal`, `chamfer_set_two_distances`, `chamfer_set_distance_angle`, `chamfer_set_compact_equal`: Offsets are relative to the primary header of the set record; the frame ends at its paired indexed header.
 Records `fillet_set_constant`, `fillet_set_chordal`, `fillet_set_compact_constant`, `fillet_set_asymmetric`, `fillet_set_variable`: Offsets are relative to the set record indexed header; the frame ends at the next indexed header.
 Records `design_draft_scope_class318_shifted`, `design_draft_scope_class372`, `design_draft_scope_class448`: Offsets are relative to the primary Draft indexed header. The paired indexed header begins at offset 340.
-Records `paramesh_flagged_mesh_body_join_prefix`, `paramesh_mesh_body_join_prefix`: Offsets are relative to the mesh-body primary indexed header. Presentation fields occupy the unstated spans, and the primary record can continue after this fixed prefix.
+Records `paramesh_flagged_mesh_body_join_prefix`, `paramesh_mesh_body_join_prefix`, `paramesh_scopeless_mesh_body_join_prefix`, `paramesh_flagged_scopeless_mesh_body_join_prefix`: Offsets are relative to the mesh-body primary indexed header. Presentation fields occupy the unstated spans, and the primary record can continue after this fixed prefix.
 Records `paramesh_mesh_collection_prefix`, `paramesh_flagged_mesh_collection_prefix`: Offsets are relative to the mesh-collection indexed header. The nested CommonData record starts at the end of this prefix.
 Records `paramesh_collection_owner_backlink_prefix`, `paramesh_collection_owner_v17`: Offsets are relative to the collection-owner indexed header. The record can continue after this fixed backlink prefix.
 Records `assembly_legacy_class_369_path_wrapper_one`, `assembly_legacy_class_369_path_wrapper_two`: Offsets are relative to the class-369 indexed header.
@@ -2130,11 +2130,11 @@ Spec §3.1 · layout: byte offsets · size: 564 B
 | 41 | 1 | `first_presence` | `u8` | little | spec | offset 41 in the unshifted form |
 | 42 | 128 | `first_transform` | `f64[16]` | little | spec | two equal row-major 4×4 f64 affine matrices at record-relative offsets 42 and 171 |
 | 171 | 128 | `second_transform` | `f64[16]` | little | spec | two equal row-major 4×4 f64 affine matrices at record-relative offsets 42 and 171 |
-| 508 | 11 | `feature_scope_reference` | `bytes[11]` | little | spec | Marked same-segment references at offsets 508, 519, 530, 541, and 553 name the owning feature scope, the reciprocal body wrapper, a `Body` owner, the GUID record, and a Scene node. |
-| 519 | 11 | `wrapper_reference` | `bytes[11]` | little | spec | Marked same-segment references at offsets 508, 519, 530, 541, and 553 name the owning feature scope, the reciprocal body wrapper, a `Body` owner, the GUID record, and a Scene node. |
-| 530 | 11 | `body_owner_reference` | `bytes[11]` | little | spec | Marked same-segment references at offsets 508, 519, 530, 541, and 553 name the owning feature scope, the reciprocal body wrapper, a `Body` owner, the GUID record, and a Scene node. |
-| 541 | 11 | `container_guid_reference` | `bytes[11]` | little | spec | Marked same-segment references at offsets 508, 519, 530, 541, and 553 name the owning feature scope, the reciprocal body wrapper, a `Body` owner, the GUID record, and a Scene node. |
-| 553 | 11 | `scene_node_reference` | `bytes[11]` | little | spec | Marked same-segment references at offsets 508, 519, 530, 541, and 553 name the owning feature scope, the reciprocal body wrapper, a `Body` owner, the GUID record, and a Scene node. |
+| 508 | 11 | `feature_scope_reference` | `bytes[11]` | little | spec | marked same-segment references at offsets 508, 519, 530, 541, and 553 name the owning feature scope, the reciprocal body wrapper, a `Body` owner, the GUID record, and a Scene node. |
+| 519 | 11 | `wrapper_reference` | `bytes[11]` | little | spec | marked same-segment references at offsets 508, 519, 530, 541, and 553 name the owning feature scope, the reciprocal body wrapper, a `Body` owner, the GUID record, and a Scene node. |
+| 530 | 11 | `body_owner_reference` | `bytes[11]` | little | spec | marked same-segment references at offsets 508, 519, 530, 541, and 553 name the owning feature scope, the reciprocal body wrapper, a `Body` owner, the GUID record, and a Scene node. |
+| 541 | 11 | `container_guid_reference` | `bytes[11]` | little | spec | marked same-segment references at offsets 508, 519, 530, 541, and 553 name the owning feature scope, the reciprocal body wrapper, a `Body` owner, the GUID record, and a Scene node. |
+| 553 | 11 | `scene_node_reference` | `bytes[11]` | little | spec | marked same-segment references at offsets 508, 519, 530, 541, and 553 name the owning feature scope, the reciprocal body wrapper, a `Body` owner, the GUID record, and a Scene node. |
 
 Unstated regions:
 
@@ -2142,6 +2142,64 @@ Unstated regions:
 - `170..171` (1 B): One structural byte separates the two transform blocks.
 - `299..508` (209 B): Presentation fields occupy the span before the feature-scope reference.
 - `552..553` (1 B): One structural byte separates the GUID and Scene-node references.
+
+## `paramesh_scopeless_mesh_body_join_prefix`
+
+Spec §3.1 · layout: byte offsets · size: 554 B
+
+Parsed by:
+- `crates/cadmpeg-codec-f3d/src/design/decode/mesh.rs`
+
+| Offset | Size | Field | Type | Endian | Src | Meaning |
+| -----: | ---: | ----- | ---- | ------ | --- | ------- |
+| 0 | 11 | `indexed_header` | `bytes[11]` | little | spec | Its indexed header is followed by ten zero bytes. |
+| 11 | 10 | `zero_run_10` | `bytes[10]` | little | spec | Its indexed header is followed by ten zero bytes. |
+| 21 | 4 | `body_word` | `u32` | little | spec | It stores a u32 at offset 21. |
+| 41 | 1 | `first_presence` | `u8` | little | spec | offset 41 in the unshifted form |
+| 42 | 128 | `first_transform` | `f64[16]` | little | spec | two equal row-major 4×4 f64 affine matrices at record-relative offsets 42 and 171 |
+| 171 | 128 | `second_transform` | `f64[16]` | little | spec | two equal row-major 4×4 f64 affine matrices at record-relative offsets 42 and 171 |
+| 508 | 1 | `feature_scope_slot` | `u8` | little | spec | the unshifted form stores the zero byte at offset 508 · value `0` |
+| 509 | 11 | `wrapper_reference` | `bytes[11]` | little | spec | the wrapper, owner, GUID, and Scene-node references at offsets 509, 520, 531, and 543 |
+| 520 | 11 | `body_owner_reference` | `bytes[11]` | little | spec | the wrapper, owner, GUID, and Scene-node references at offsets 509, 520, 531, and 543 |
+| 531 | 11 | `container_guid_reference` | `bytes[11]` | little | spec | the wrapper, owner, GUID, and Scene-node references at offsets 509, 520, 531, and 543 |
+| 543 | 11 | `scene_node_reference` | `bytes[11]` | little | spec | the wrapper, owner, GUID, and Scene-node references at offsets 509, 520, 531, and 543 |
+
+Unstated regions:
+
+- `25..41` (16 B): The remaining mesh-body prologue is outside this fixed join table.
+- `170..171` (1 B): One structural byte separates the two transform blocks.
+- `299..508` (209 B): Presentation fields occupy the span before the feature-scope slot.
+- `542..543` (1 B): One structural byte separates the GUID and Scene-node references.
+
+## `paramesh_flagged_scopeless_mesh_body_join_prefix`
+
+Spec §3.1 · layout: byte offsets · size: 558 B
+
+Parsed by:
+- `crates/cadmpeg-codec-f3d/src/design/decode/mesh.rs`
+
+| Offset | Size | Field | Type | Endian | Src | Meaning |
+| -----: | ---: | ----- | ---- | ------ | --- | ------- |
+| 0 | 11 | `indexed_header` | `bytes[11]` | little | spec | Its indexed header is followed by ten zero bytes. |
+| 11 | 9 | `zero_run_9` | `bytes[9]` | little | spec | in place of the last of the ten zero bytes, and a u32 at offset 21 |
+| 20 | 1 | `flag` | `u8` | little | spec | A mesh body can instead store byte `01` at offset 20 · value `1` |
+| 21 | 4 | `flagged_word` | `u32` | little | spec | and a u32 at offset 21. |
+| 25 | 4 | `body_word` | `u32` | little | spec | another u32 at offset 25 |
+| 45 | 1 | `first_presence` | `u8` | little | spec | offset 45 in the shifted form |
+| 46 | 128 | `first_transform` | `f64[16]` | little | spec | the matrices start at offsets 46 and 175 |
+| 175 | 128 | `second_transform` | `f64[16]` | little | spec | the matrices start at offsets 46 and 175 |
+| 512 | 1 | `feature_scope_slot` | `u8` | little | spec | the shifted form stores the zero byte at offset 512 · value `0` |
+| 513 | 11 | `wrapper_reference` | `bytes[11]` | little | spec | these references at offsets 513, 524, 535, and 547 |
+| 524 | 11 | `body_owner_reference` | `bytes[11]` | little | spec | these references at offsets 513, 524, 535, and 547 |
+| 535 | 11 | `container_guid_reference` | `bytes[11]` | little | spec | these references at offsets 513, 524, 535, and 547 |
+| 547 | 11 | `scene_node_reference` | `bytes[11]` | little | spec | these references at offsets 513, 524, 535, and 547 |
+
+Unstated regions:
+
+- `29..45` (16 B): The remaining mesh-body prologue is outside this fixed join table.
+- `174..175` (1 B): One structural byte separates the two transform blocks.
+- `303..512` (209 B): Presentation fields occupy the span before the feature-scope slot.
+- `546..547` (1 B): One structural byte separates the GUID and Scene-node references.
 
 ## `paramesh_mesh_collection_prefix`
 

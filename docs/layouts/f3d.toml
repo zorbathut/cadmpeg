@@ -26,7 +26,7 @@ Records `design_decal_scope_prefix`, `design_decal_scope_extended_prefix`, `desi
 Records `chamfer_set_equal`, `chamfer_set_two_distances`, `chamfer_set_distance_angle`, `chamfer_set_compact_equal`: Offsets are relative to the primary header of the set record; the frame ends at its paired indexed header.
 Records `fillet_set_constant`, `fillet_set_chordal`, `fillet_set_compact_constant`, `fillet_set_asymmetric`, `fillet_set_variable`: Offsets are relative to the set record indexed header; the frame ends at the next indexed header.
 Records `design_draft_scope_class318_shifted`, `design_draft_scope_class372`, `design_draft_scope_class448`: Offsets are relative to the primary Draft indexed header. The paired indexed header begins at offset 340.
-Records `paramesh_flagged_mesh_body_join_prefix`, `paramesh_mesh_body_join_prefix`: Offsets are relative to the mesh-body primary indexed header. Presentation fields occupy the unstated spans, and the primary record can continue after this fixed prefix.
+Records `paramesh_flagged_mesh_body_join_prefix`, `paramesh_mesh_body_join_prefix`, `paramesh_scopeless_mesh_body_join_prefix`, `paramesh_flagged_scopeless_mesh_body_join_prefix`: Offsets are relative to the mesh-body primary indexed header. Presentation fields occupy the unstated spans, and the primary record can continue after this fixed prefix.
 Records `paramesh_mesh_collection_prefix`, `paramesh_flagged_mesh_collection_prefix`: Offsets are relative to the mesh-collection indexed header. The nested CommonData record starts at the end of this prefix.
 Records `paramesh_collection_owner_backlink_prefix`, `paramesh_collection_owner_v17`: Offsets are relative to the collection-owner indexed header. The record can continue after this fixed backlink prefix.
 Records `assembly_legacy_class_369_path_wrapper_one`, `assembly_legacy_class_369_path_wrapper_two`: Offsets are relative to the class-369 indexed header.
@@ -6481,28 +6481,28 @@ name = "feature_scope_reference"
 offset = 508
 type = "bytes[11]"
 source = "spec"
-anchor = "Marked same-segment references at offsets 508, 519, 530, 541, and 553 name the owning feature scope, the reciprocal body wrapper, a `Body` owner, the GUID record, and a Scene node."
+anchor = "marked same-segment references at offsets 508, 519, 530, 541, and 553 name the owning feature scope, the reciprocal body wrapper, a `Body` owner, the GUID record, and a Scene node."
 
 [[record.field]]
 name = "wrapper_reference"
 offset = 519
 type = "bytes[11]"
 source = "spec"
-anchor = "Marked same-segment references at offsets 508, 519, 530, 541, and 553 name the owning feature scope, the reciprocal body wrapper, a `Body` owner, the GUID record, and a Scene node."
+anchor = "marked same-segment references at offsets 508, 519, 530, 541, and 553 name the owning feature scope, the reciprocal body wrapper, a `Body` owner, the GUID record, and a Scene node."
 
 [[record.field]]
 name = "body_owner_reference"
 offset = 530
 type = "bytes[11]"
 source = "spec"
-anchor = "Marked same-segment references at offsets 508, 519, 530, 541, and 553 name the owning feature scope, the reciprocal body wrapper, a `Body` owner, the GUID record, and a Scene node."
+anchor = "marked same-segment references at offsets 508, 519, 530, 541, and 553 name the owning feature scope, the reciprocal body wrapper, a `Body` owner, the GUID record, and a Scene node."
 
 [[record.field]]
 name = "container_guid_reference"
 offset = 541
 type = "bytes[11]"
 source = "spec"
-anchor = "Marked same-segment references at offsets 508, 519, 530, 541, and 553 name the owning feature scope, the reciprocal body wrapper, a `Body` owner, the GUID record, and a Scene node."
+anchor = "marked same-segment references at offsets 508, 519, 530, 541, and 553 name the owning feature scope, the reciprocal body wrapper, a `Body` owner, the GUID record, and a Scene node."
 
 [[record.gap]]
 offset = 552
@@ -6514,7 +6514,234 @@ name = "scene_node_reference"
 offset = 553
 type = "bytes[11]"
 source = "spec"
-anchor = "Marked same-segment references at offsets 508, 519, 530, 541, and 553 name the owning feature scope, the reciprocal body wrapper, a `Body` owner, the GUID record, and a Scene node."
+anchor = "marked same-segment references at offsets 508, 519, 530, 541, and 553 name the owning feature scope, the reciprocal body wrapper, a `Body` owner, the GUID record, and a Scene node."
+
+[[record]]
+name = "paramesh_scopeless_mesh_body_join_prefix"
+kind = "byte"
+section = "3.1"
+anchor = "the unshifted form stores the zero byte at offset 508"
+size = 554
+parsed_by = "crates/cadmpeg-codec-f3d/src/design/decode/mesh.rs"
+
+[[record.field]]
+name = "indexed_header"
+offset = 0
+type = "bytes[11]"
+source = "spec"
+anchor = "Its indexed header is followed by ten zero bytes."
+
+[[record.field]]
+name = "zero_run_10"
+offset = 11
+type = "bytes[10]"
+source = "spec"
+anchor = "Its indexed header is followed by ten zero bytes."
+
+[[record.field]]
+name = "body_word"
+offset = 21
+type = "u32"
+source = "spec"
+anchor = "It stores a u32 at offset 21."
+
+[[record.gap]]
+offset = 25
+size = 16
+note = "The remaining mesh-body prologue is outside this fixed join table."
+
+[[record.field]]
+name = "first_presence"
+offset = 41
+type = "u8"
+source = "spec"
+anchor = "offset 41 in the unshifted form"
+
+[[record.field]]
+name = "first_transform"
+offset = 42
+type = "f64[16]"
+source = "spec"
+anchor = "two equal row-major 4×4 f64 affine matrices at record-relative offsets 42 and 171"
+
+[[record.gap]]
+offset = 170
+size = 1
+note = "One structural byte separates the two transform blocks."
+
+[[record.field]]
+name = "second_transform"
+offset = 171
+type = "f64[16]"
+source = "spec"
+anchor = "two equal row-major 4×4 f64 affine matrices at record-relative offsets 42 and 171"
+
+[[record.gap]]
+offset = 299
+size = 209
+note = "Presentation fields occupy the span before the feature-scope slot."
+
+[[record.field]]
+name = "feature_scope_slot"
+offset = 508
+type = "u8"
+value = 0
+source = "spec"
+anchor = "the unshifted form stores the zero byte at offset 508"
+
+[[record.field]]
+name = "wrapper_reference"
+offset = 509
+type = "bytes[11]"
+source = "spec"
+anchor = "the wrapper, owner, GUID, and Scene-node references at offsets 509, 520, 531, and 543"
+
+[[record.field]]
+name = "body_owner_reference"
+offset = 520
+type = "bytes[11]"
+source = "spec"
+anchor = "the wrapper, owner, GUID, and Scene-node references at offsets 509, 520, 531, and 543"
+
+[[record.field]]
+name = "container_guid_reference"
+offset = 531
+type = "bytes[11]"
+source = "spec"
+anchor = "the wrapper, owner, GUID, and Scene-node references at offsets 509, 520, 531, and 543"
+
+[[record.gap]]
+offset = 542
+size = 1
+note = "One structural byte separates the GUID and Scene-node references."
+
+[[record.field]]
+name = "scene_node_reference"
+offset = 543
+type = "bytes[11]"
+source = "spec"
+anchor = "the wrapper, owner, GUID, and Scene-node references at offsets 509, 520, 531, and 543"
+
+[[record]]
+name = "paramesh_flagged_scopeless_mesh_body_join_prefix"
+kind = "byte"
+section = "3.1"
+anchor = "the shifted form stores the zero byte at offset 512"
+size = 558
+parsed_by = "crates/cadmpeg-codec-f3d/src/design/decode/mesh.rs"
+
+[[record.field]]
+name = "indexed_header"
+offset = 0
+type = "bytes[11]"
+source = "spec"
+anchor = "Its indexed header is followed by ten zero bytes."
+
+[[record.field]]
+name = "zero_run_9"
+offset = 11
+type = "bytes[9]"
+source = "spec"
+anchor = "in place of the last of the ten zero bytes, and a u32 at offset 21"
+
+[[record.field]]
+name = "flag"
+offset = 20
+type = "u8"
+value = 1
+source = "spec"
+anchor = "A mesh body can instead store byte `01` at offset 20"
+
+[[record.field]]
+name = "flagged_word"
+offset = 21
+type = "u32"
+source = "spec"
+anchor = "and a u32 at offset 21."
+
+[[record.field]]
+name = "body_word"
+offset = 25
+type = "u32"
+source = "spec"
+anchor = "another u32 at offset 25"
+
+[[record.gap]]
+offset = 29
+size = 16
+note = "The remaining mesh-body prologue is outside this fixed join table."
+
+[[record.field]]
+name = "first_presence"
+offset = 45
+type = "u8"
+source = "spec"
+anchor = "offset 45 in the shifted form"
+
+[[record.field]]
+name = "first_transform"
+offset = 46
+type = "f64[16]"
+source = "spec"
+anchor = "the matrices start at offsets 46 and 175"
+
+[[record.gap]]
+offset = 174
+size = 1
+note = "One structural byte separates the two transform blocks."
+
+[[record.field]]
+name = "second_transform"
+offset = 175
+type = "f64[16]"
+source = "spec"
+anchor = "the matrices start at offsets 46 and 175"
+
+[[record.gap]]
+offset = 303
+size = 209
+note = "Presentation fields occupy the span before the feature-scope slot."
+
+[[record.field]]
+name = "feature_scope_slot"
+offset = 512
+type = "u8"
+value = 0
+source = "spec"
+anchor = "the shifted form stores the zero byte at offset 512"
+
+[[record.field]]
+name = "wrapper_reference"
+offset = 513
+type = "bytes[11]"
+source = "spec"
+anchor = "these references at offsets 513, 524, 535, and 547"
+
+[[record.field]]
+name = "body_owner_reference"
+offset = 524
+type = "bytes[11]"
+source = "spec"
+anchor = "these references at offsets 513, 524, 535, and 547"
+
+[[record.field]]
+name = "container_guid_reference"
+offset = 535
+type = "bytes[11]"
+source = "spec"
+anchor = "these references at offsets 513, 524, 535, and 547"
+
+[[record.gap]]
+offset = 546
+size = 1
+note = "One structural byte separates the GUID and Scene-node references."
+
+[[record.field]]
+name = "scene_node_reference"
+offset = 547
+type = "bytes[11]"
+source = "spec"
+anchor = "these references at offsets 513, 524, 535, and 547"
 
 [[record]]
 name = "paramesh_mesh_collection_prefix"
