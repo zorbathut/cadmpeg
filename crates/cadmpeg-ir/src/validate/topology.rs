@@ -246,10 +246,7 @@ fn validate_input_face_geometry(
                 Check::Counts,
                 Severity::Error,
                 Some(state.id.as_str()),
-                crate::rule!(
-                    "topology.input-state-face-more-one-geometry",
-                    "input-state face `{face}` has more than one geometry entry"
-                ),
+                format_args!("input-state face `{face}` has more than one geometry entry"),
             );
         }
     }
@@ -290,10 +287,7 @@ fn validate_input_body_writers<V>(
                 Check::Counts,
                 Severity::Error,
                 Some(state.id.as_str()),
-                crate::rule!(
-                    "topology.input-state-body-more-one-writer",
-                    "input-state body `{body}` has more than one writer entry"
-                ),
+                format_args!("input-state body `{body}` has more than one writer entry"),
             );
         }
     }
