@@ -5096,6 +5096,22 @@
         "native"
       ]
     },
+    "BodyMember3": {
+      "description": "Body operands resolved by the decoder or retained in native form.",
+      "type": "object",
+      "properties": {
+        "body": {
+          "$ref": "#/$defs/GeneratedBodyRef"
+        },
+        "native": {
+          "$ref": "#/$defs/NonBlankString"
+        }
+      },
+      "required": [
+        "body",
+        "native"
+      ]
+    },
     "BodyMembers": {
       "description": "Immutable, checked rows pairing a body identity with its native member.",
       "type": "array",
@@ -5108,6 +5124,13 @@
       "type": "array",
       "items": {
         "$ref": "#/$defs/BodyMember2"
+      }
+    },
+    "BodyMembers3": {
+      "description": "Immutable, checked rows pairing a body identity with its native member.",
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/BodyMember3"
       }
     },
     "BodyRetentionMode": {
@@ -5327,6 +5350,34 @@
               "required": [
                 "bodies",
                 "native"
+              ]
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "value"
+          ]
+        },
+        {
+          "description": "Bodies in intermediate regenerated feature results from independently\nretained native selection members.",
+          "type": "object",
+          "properties": {
+            "kind": {
+              "type": "string",
+              "const": "generated_set"
+            },
+            "value": {
+              "type": "object",
+              "properties": {
+                "members": {
+                  "description": "Checked rows in native member order.",
+                  "$ref": "#/$defs/BodyMembers3"
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "members"
               ]
             }
           },
