@@ -504,6 +504,8 @@ pub(crate) enum F3dLossCode {
     FeatureOutputStateChainUnbound,
     /// An affected body slot has no unique active body in the selected BREP.
     FeatureOutputBodyUnbound,
+    /// A pattern result state holds a generated solid body that no model body joins.
+    FeaturePatternCopyBodyOmitted,
     /// A derived base scope stores a copy of a source and frame that the archive does not contain.
     FeatureDerivedBaseUnresolved,
     /// A Pipe section is inferred as a circle from its result faces.
@@ -1749,6 +1751,7 @@ impl F3dLossCode {
         Self::FeatureRectangularPatternDirectionRecordDisagrees,
         Self::FeatureOutputStateChainUnbound,
         Self::FeatureOutputBodyUnbound,
+        Self::FeaturePatternCopyBodyOmitted,
         Self::FeatureDerivedBaseUnresolved,
         Self::FeaturePipeCircularSectionInferred,
         Self::FeaturePipeWholePathExtentAssumed,
@@ -2627,6 +2630,7 @@ impl F3dLossCode {
             }
             Self::FeatureOutputStateChainUnbound => "feature.output-state-chain-unbound",
             Self::FeatureOutputBodyUnbound => "feature.output-body-unbound",
+            Self::FeaturePatternCopyBodyOmitted => "feature.pattern-copy-body-omitted",
             Self::FeatureDerivedBaseUnresolved => "feature.derived-base-unresolved",
             Self::FeaturePipeCircularSectionInferred => "feature.pipe-circular-section-inferred",
             Self::FeaturePipeWholePathExtentAssumed => "feature.pipe-whole-path-extent-assumed",
@@ -3776,6 +3780,7 @@ impl F3dLossCode {
             | Self::FeatureHistoryBodyConsumedWithheld
             | Self::FeatureOwnedBodyPairingAssumed
             | Self::FeatureOutputBodyUnbound
+            | Self::FeaturePatternCopyBodyOmitted
             | Self::FeatureOutputStateChainUnbound
             | Self::FeatureStoredBodiesUnbound
             | Self::FeatureDerivedInstanceComponentInsertAssumed
@@ -4570,6 +4575,7 @@ impl F3dLossCode {
             | Self::FeatureHistoryBodyConsumedWithheld
             | Self::FeatureOwnedBodyPairingAssumed
             | Self::FeatureOutputBodyUnbound
+            | Self::FeaturePatternCopyBodyOmitted
             | Self::FeatureOutputStateChainUnbound
             | Self::FeatureStoredBodiesUnbound
             | Self::FeatureDerivedInstanceComponentInsertAssumed
@@ -5638,6 +5644,7 @@ mod tests {
                 "feature.rectangular-pattern-direction-record-disagrees",
                 "feature.output-state-chain-unbound",
                 "feature.output-body-unbound",
+                "feature.pattern-copy-body-omitted",
                 "feature.derived-base-unresolved",
                 "feature.pipe-circular-section-inferred",
                 "feature.pipe-whole-path-extent-assumed",
