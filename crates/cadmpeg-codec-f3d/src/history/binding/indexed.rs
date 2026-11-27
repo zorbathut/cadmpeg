@@ -272,7 +272,7 @@ indexed_topology! {
         coedge_topology = 17: AsmHistoricalCoedge => |row: &AsmHistoricalCoedge| row.coedge,
         edge_vertices = 18: AsmHistoricalEdge => |row: &AsmHistoricalEdge| row.edge,
         face_surfaces = 19: AsmHistoricalCarrierBinding => |row: &AsmHistoricalCarrierBinding| row.entity,
-        face_senses = 36: AsmHistoricalFaceSense => |row: &AsmHistoricalFaceSense| row.face,
+        face_senses = 37: AsmHistoricalFaceSense => |row: &AsmHistoricalFaceSense| row.face,
         edge_curves = 20: AsmHistoricalOptionalCarrierBinding => |row: &AsmHistoricalOptionalCarrierBinding| row.entity,
         coedge_pcurves = 21: AsmHistoricalOptionalCarrierBinding => |row: &AsmHistoricalOptionalCarrierBinding| row.entity,
         vertex_points = 22: AsmHistoricalCarrierBinding => |row: &AsmHistoricalCarrierBinding| row.entity,
